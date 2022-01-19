@@ -2,6 +2,44 @@
 
 #CHECK MD5 SUMS
 
+#Download FASTQ files from Lane 1
+# Arguments
+project=DS_NDBS_NovaSeq395_lane1
+#https://bioinformatics.ucdavis.edu/research-computing/documentation/archiving-slims-data/
+SLIMSstring=biv9g24tsh
+SLIMSdir=Un_DTSA454/Project_JLBL_Nova396P_Laufer
+genome=hg38
+programsPATH=/share/lasallelab/programs
+
+echo "Creating directory for $project"
+mkdir ${project}
+
+echo "Downloading fastq files for $SLIMSstring"
+call="rsync \
+-avL \
+slimsdata.genomecenter.ucdavis.edu::slims/${SLIMSstring}/ \
+${project}"
+	
+echo ${call}
+eval ${call}
+
+echo "md5sum check"
+cd ${project}/${SLIMSdir}
+if md5sum -c \@md5Sum.md5
+then
+    echo
+    echo "All files have the correct md5sum"
+else
+    echo "ERROR: Some files are corrupt or missing"
+    exit 1
+fi
+
+#!/bin/bash
+
+#CHECK MD5 SUMS
+
+
+#Download FASTQ files from Lane 2
 # Arguments
 project=DS_NDBS_NovaSeq395_lane2
 #https://bioinformatics.ucdavis.edu/research-computing/documentation/archiving-slims-data/
@@ -37,6 +75,8 @@ fi
 
 #CHECK MD5 SUMS
 
+
+#Download FASTQ files from Lane 3
 # Arguments
 project=DS_NDBS_NovaSeq395_lane3
 #https://bioinformatics.ucdavis.edu/research-computing/documentation/archiving-slims-data/
@@ -68,14 +108,12 @@ else
     exit 1
 fi
 
-
-
-#Change lane name of Un_DTDB310 sequences from L003 to L001. Now each sample has L001-L004
-#Move raw Un_DTDB310 sequences into Un_DTSA333 folder. Now all 96 samples have 4 lanes of sequencing in same folder 
+#move raw sequences from all 3 lanes into the same folder: DS_NDBS_NovaSeq474. Now all 92 samples have 3 lanes of sequencing in same folder
 
 #MERGE LANES
 
 cd /share/lasallelab/Jules/ASD_NDBS/ASD_NDBS_NovaSeq260/ASD_NDBS_NovaSeq260_Lanes2-4/Un_DTSA333/Project_JLJM_Nova260P_Mouat
+cd /share/lasallelab/Jules/DS_NDBS/DS_NDBS_NovaSeq474
 
 echo "Merging lanes"
 
