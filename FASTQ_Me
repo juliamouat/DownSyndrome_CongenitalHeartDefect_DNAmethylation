@@ -193,7 +193,7 @@ else
         exit 1
 fi
 
-project=ASD_NDBS_NovaSeq260
+project=DS_NDBS_NovaSeq474
 echo "Submitting $genome alignment command to cluster for ${project}"
 cd ..
 call="sbatch \
