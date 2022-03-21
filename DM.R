@@ -1,6 +1,7 @@
 #identify DMRs for individuals with Down Syndrome based on whether they have a major heart defect or not 
 #Ben Laufer pipeline
 
+cd /share/lasallelab/Jules/DS_NDBS/cytosine_reports
 
 module load R/4.1.0
 module load homer
