@@ -18,7 +18,7 @@ Rscript \
 --maxPerms 10 \
 --maxBlockPerms 10 \
 --cutoff '0.05' \
---testCovariate Major_heart_defect \
+--testCovariate MajorHeartDefect \
 --adjustCovariate 'Sex;AgeBloodCollection;CD8T;CD4T;NK;Bcell;Mono;Gran;nRBC' \
 --sexCheck TRUE \
 --GOfuncR TRUE \
