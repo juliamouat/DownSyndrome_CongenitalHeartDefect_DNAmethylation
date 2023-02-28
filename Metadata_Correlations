@@ -1,0 +1,22 @@
+library(Hmisc)
+library(RcmdrMisc)
+library(psych)
+
+females_simple <- read.xlsx("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/sample_info_all.xlsx", sheet = "Females_Simple", rowNames = TRUE)
+females_simple <- females_simple[,1:13]
+females_simple.rcorr = rcorr(as.matrix(females_simple), type = "pearson")
+females_simple.coeff = females_simple.rcorr$r
+write.xlsx(as.data.frame(females_simple.coeff), file = "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/Metadata Correlations/Females/Females_Pearson_simple.xlsx", colNames = TRUE, rowNames = TRUE)
+females_simple.p = females_simple.rcorr$P
+females_simple_fdr <- corr.test(females_simple, y = NULL, use = "pairwise", method = "pearson", adjust = "fdr", alpha = 0.05)
+write.xlsx(as.data.frame(females_simple_fdr$p), file = "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/Metadata Correlations/Females/Females_Pearson_fdr_simple.xlsx", colNames = TRUE, rowNames = TRUE)
+
+
+males_simple <- read.xlsx("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/sample_info_all.xlsx", sheet = "Males_Simple", rowNames = TRUE)
+males_simple <- males_simple[,1:13]
+males_simple.rcorr = rcorr(as.matrix(males_simple), type = "pearson")
+males_simple.coeff = males_simple.rcorr$r
+write.xlsx(as.data.frame(males_simple.coeff), file = "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/Metadata Correlations/Males/Males_Pearson_simple.xlsx", colNames = TRUE, rowNames = TRUE)
+males_simple.p = males_simple.rcorr$P
+males_simple_fdr <- corr.test(males_simple, y = NULL, use = "pairwise", method = "pearson", adjust = "fdr", alpha = 0.05)
+write.xlsx(as.data.frame(males_simple_fdr$p), file = "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/Metadata Correlations/Males/Males_Pearson_fdr_simple.xlsx", colNames = TRUE, rowNames = TRUE)
