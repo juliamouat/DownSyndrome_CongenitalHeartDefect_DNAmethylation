@@ -1,7 +1,3 @@
-#login to Epigenerate
-
-cd /share/lasallelab/Jules/DS_NDBS
-screen -S DS
 
 #!/bin/bash
 
