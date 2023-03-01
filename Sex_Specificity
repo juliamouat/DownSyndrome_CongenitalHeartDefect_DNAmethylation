@@ -1,0 +1,18 @@
+#Get smoothed methylation levels of Male DMRs in Females samples and Female DMRs in Male samples 
+
+library(bsseq)
+library(openxlsx)
+library(rtracklayer)
+setwd("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Sex_Specificity")
+
+#Male DMRs in Female Samples
+load("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Females/V1/RData/bsseq.RData")
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Males/V1/DMRs/DMRs.bed")
+MaleDMRs_FemaleSamples <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(MaleDMRs_FemaleSamples), "MaleDMRs_FemaleSamples_SmoothMethylation.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Female DMRs in Male Samples
+load("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Males/V1/RData/bsseq.RData")
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Females/V1/DMRs/DMRs.bed")
+FemaleDMRs_MaleSamples <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(FemaleDMRs_MaleSamples), "FemaleDMRs_MaleSamples_SmoothMethylation.xlsx", rowNames = TRUE, colNames = TRUE)
