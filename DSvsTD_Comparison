@@ -1,0 +1,51 @@
+#input BED file of DS MHD DMRs and get methylation levels of DS vs TD comparison samples
+#comparison samples from Laufer et al., 2020: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7788293/
+
+#code from https://rdrr.io/bioc/bsseq/man/getMeth.html
+
+#getMeth(BSseq, regions = NULL, type = c("smooth", "raw"),
+#       what = c("perBase", "perRegion"), confint = FALSE, alpha = 0.95,
+#       withDimnames = TRUE)
+
+#Sex-combined
+load("/share/lasallelab/Ben/DownSyndrome/NDBS/DMRs/DSvsTD/Production/RData/bsseq.RData")
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Combined/V2/DMRs/DMRs.bed")
+DS_Comparison <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(DS_Comparison), "Combined_DS_Comparison.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Females Only
+setwd("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/DSvTD_Comparison/Females")
+load("/share/lasallelab/Ben/DownSyndrome/NDBS/DMRs/DSvsTD/Production/RData/bsseq.RData")  #Ben has no BSseq object for females only so use both sexes then delete males for analysis
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Females/V1/DMRs/DMRs.bed")
+DS_Comparison <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(DS_Comparison), "Female_DS_Comparison.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Males Only
+setwd("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/DSvTD_Comparison/Males")
+load("/share/lasallelab/Ben/DownSyndrome/NDBS/DMRs/DSvsTD/Production/RData/bsseq.RData")  #Ben has no BSseq object for males only so use both sexes then delete females for analysis
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Males/V1/DMRs/DMRs.bed")
+DS_Comparison <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(DS_Comparison), "Male_DS_Comparison.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Use CHD background regions as regions to compare to results from DMRs 
+
+#Sex-combined
+setwd("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/DSvTD_Comparison/Combined")
+load("/share/lasallelab/Ben/DownSyndrome/NDBS/DMRs/DSvsTD/Production/RData/bsseq.RData")
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Combined/V2/DMRs/backgroundRegions.bed")
+DS_Comparison <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(DS_Comparison), "Combined_DS_Comparison_Background.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Females Only
+setwd("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/DSvTD_Comparison/Females")
+load("/share/lasallelab/Ben/DownSyndrome/NDBS/DMRs/DSvsTD/Production/RData/bsseq.RData")  #Ben has no BSseq object for females only so use both sexes then delete males for analysis
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Females/V1/DMRs/backgroundRegions.bed")
+DS_Comparison <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(DS_Comparison), "Female_DS_Comparison_Background.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Males Only
+setwd("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/DSvTD_Comparison/Males")
+load("/share/lasallelab/Ben/DownSyndrome/NDBS/DMRs/DSvsTD/Production/RData/bsseq.RData")  #Ben has no BSseq object for males only so use both sexes then delete females for analysis
+regions <- rtracklayer::import.bed("/share/lasallelab/Jules/DS_NDBS/DMRichR/CHD/Males/V1/DMRs/backgroundRegions.bed")
+DS_Comparison <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(DS_Comparison), "Male_DS_Comparison_Background.xlsx", rowNames = TRUE, colNames = TRUE)
