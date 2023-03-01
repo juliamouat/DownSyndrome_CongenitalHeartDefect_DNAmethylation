@@ -1,0 +1,27 @@
+#input BED file of DS MHD DMRs and get methylation levels of replication samples
+#replication samples from Laufer et al., 2020: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7788293/
+
+#code from https://rdrr.io/bioc/bsseq/man/getMeth.html
+
+#getMeth(BSseq, regions = NULL, type = c("smooth", "raw"),
+#       what = c("perBase", "perRegion"), confint = FALSE, alpha = 0.95,
+#       withDimnames = TRUE)
+
+library(bsseq)
+library(openxlsx)
+
+#Sex-combined
+load("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Ben_DMRs/CHD/bsseq.RData")
+regions <- rtracklayer::import.bed("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Combined/V2_combined_CorrectforSex+Age_CellTypes/DMRs.bed")
+Replication <- getMeth(bs.filtered.bsseq, regions = regions, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(Replication), "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Replication/CHD_Replication/Combined_Replication_DMRs.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Females
+regions_females <- rtracklayer::import.bed("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Females/V1/DMRs/DMRs.bed")
+Female_Replication <- getMeth(bs.filtered.bsseq, regions = regions_females, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(Female_Replication), "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Replication/CHD_Replication/Female_Replication_DMRs.xlsx", rowNames = TRUE, colNames = TRUE)
+
+#Males
+regions_males <- rtracklayer::import.bed("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Males/V1/DMRs/DMRs.bed")
+Male_Replication <- getMeth(bs.filtered.bsseq, regions = regions_males, type = "smooth", what = "perRegion")
+write.xlsx(as.data.frame(Male_Replication), "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Replication/CHD_Replication/Male_Replication_DMRs.xlsx", rowNames = TRUE, colNames = TRUE)
