@@ -1,0 +1,21 @@
+library(rGREAT)
+library(rtracklayer)
+library(openxlsx)
+
+SexCombined_DMRs <- import("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Combined/V2_combined_CorrectforSex+Age_CellTypes/DMRs.bed", format = "bed")
+SexCombined_Background <- import("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Combined/V2_combined_CorrectforSex+Age_CellTypes/backgroundRegions.bed", format = "bed")
+SexCombined = submitGreatJob(SexCombined_DMRs, SexCombined_Background, species = "hg38", rule = "oneClosest")
+SexCombined_tables_genes = getEnrichmentTables(SexCombined, download_by = "tsv")
+write.xlsx(SexCombined_tables_genes, "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/rGREAT/SexCombined_rGREAT.xlsx")
+
+Females_DMRs <- import("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Females/V1/DMRs/DMRs.bed", format = "bed")
+Females_Background <- import("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Females/V1/DMRs/backgroundRegions.bed", format = "bed")
+Females = submitGreatJob(Females_DMRs, Females_Background, species = "hg38", rule = "oneClosest")
+Females_tables_genes = getEnrichmentTables(Females, download_by = "tsv")
+write.xlsx(Females_tables_genes, "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/rGREAT/Females_rGREAT.xlsx")
+
+Males_DMRs <- import("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Males/V1/DMRs/DMRs.bed", format = "bed")
+Males_Background <- import("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/Males/V1/DMRs/backgroundRegions.bed", format = "bed")
+Males = submitGreatJob(Males_DMRs, Males_Background, species = "hg38", rule = "oneClosest")
+Males_tables_genes = getEnrichmentTables(Males, download_by = "tsv")
+write.xlsx(Males_tables_genes, "/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/CHD/rGREAT/Males_rGREAT.xlsx")
