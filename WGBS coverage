@@ -1,1 +1,16 @@
+#code from Comethyl: https://github.com/cemordaunt/comethyl
+
+#load packages
+library(tidyverse)
+library(WGCNA)
+library(comethyl)
+library(Biobase)
+
+# Read Bismark CpG Reports ####
+colData <- openxlsx::read.xlsx("sample_info.xlsx", rowNames = TRUE)
+bs <- getCpGs(colData, file = "Unfiltered_BSseq.rds") #29,401,795 unfiltered CpGs
+
+# Examine CpG Totals at Different Cutoffs ####
+CpGtotals <- getCpGtotals(bs, file = "CpG_Totals.txt")
+plotCpGtotals(CpGtotals, file = "CpG_Totals.pdf")
 
