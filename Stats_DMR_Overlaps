@@ -1,0 +1,55 @@
+sapply(c("reshape2", "tidyverse", "regioneR", "LOLA", "rtracklayer"), require, character.only = TRUE)
+
+set.seed(5)
+
+#Function ################################################
+DMRpermTest <- function(A, B, genome, universe, Comparison, file){
+  message("[DMRpermTest] Performing permutation test of regions using regioneR.")
+  pt <- permTest(A = A, B = B, genome = genome, ntimes = 10000, universe = universe, 
+                 evaluate.function = c(numOverlaps, meanDistance), randomize.function = resampleRegions, 
+                 mc.set.seed = FALSE, force.parallel = TRUE, alternative = "auto")
+  stats <- data.frame("Comparison" = Comparison, "Overlap_observed" = pt$Function1$observed, 
+                      "Overlap_zscore" = pt$Function1$zscore, "Overlap_pvalue" = pt$Function1$pval, 
+                      "Distance_observed" = pt$Function2$observed, "Distance_zscore" = pt$Function2$zscore, 
+                      "Distance_pvalue" = pt$Function2$pval)
+  message("[DMRpermTest] Complete! Writing plot and returning stats.")
+  pdf(file = file, width = 10, height = 5)
+  plot(x = pt, ncol = 2)
+  dev.off()
+  return(stats)
+}
+
+#####Load Data #######################################
+
+#DS CHD DMRs 
+DSCHD_Combined_DMRs <- import("/Combined/DMRs/DMRs.bed")
+DSCHD_Male_DMRs <- import("/Males/DMRs/DMRs.bed")
+DSCHD_Female_DMRs <- import("/Females/DMRs/DMRs.bed")
+
+#DS CHD Universe
+DSCHD_Combined_Universe <- read.csv("/Combined/Extra/bsseq_background.csv")
+DSCHD_Male_Universe <- read.csv("/Males/Extra/bsseq_background.csv")
+DSCHD_Female_Universe <- read.csv("/Females/Extra/bsseq_background.csv")
+
+#DS CHD Sex Comparisons
+DSCHD_Combined_Male <- DMRpermTest(A=DSCHD_Combined_DMRs, B=DSCHD_Male_DMRs, genome = hg38, 
+                                           universe = commonRegions(DSCHD_Combined_Universe,DSCHD_Male_Universe), 
+                                           Comparison = "DSCHD Combined vs Males Overlap",
+                                           file = "DSCHD_Combined_Males_Overlap.pdf")
+
+DSCHD_Combined_Female <- DMRpermTest(A=DSCHD_Combined_DMRs, B=DSCHD_Female_DMRs, genome = hg38, 
+                                   universe = commonRegions(DSCHD_Combined_Universe,DSCHD_Female_Universe), 
+                                   Comparison = "DSCHD Combined vs Females Overlap",
+                                   file = "DSCHD_Combined_Females_Overlap.pdf")
+
+DSCHD_Male_Female <- DMRpermTest(A=DSCHD_Male_DMRs, B=DSCHD_Female_DMRs, genome = hg38, 
+                                     universe = commonRegions(DSCHD_Male_Universe,DSCHD_Female_Universe), 
+                                     Comparison = "DSCHD Male vs Females Overlap",
+                                     file = "DSCHD_Males_Females_Overlap.pdf")
+
+
+DSCHD_Sex_Comparisons_List <- list('Combined vs Male' = DSCHD_Combined_Male, 'Combined vs Female' = DSCHD_Combined_Female, 'Male vs Female' = DSCHD_Male_Female)
+write.xlsx(DSCHD_Sex_Comparisons_List, "DSCHD_SexComparison_Overlap_stats.xlsx")
+
+
+
