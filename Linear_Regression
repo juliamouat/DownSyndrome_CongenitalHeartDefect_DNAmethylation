@@ -1,7 +1,7 @@
 library(openxlsx)
 
 #Females 
-Females_Sample_Info <- read.xlsx("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/sample_info_all.xlsx", sheet = "Females")
+Females_Sample_Info <- read.xlsx("/Down Syndrome/DMRichR/sample_info_all.xlsx", sheet = "Females")
 Females_Sample_Info_Clean <- Females_Sample_Info[1:54,]
 Females <- lm(percent_cpg_meth ~ MajorHeartDefect, data = Females_Sample_Info_Clean)
 summary(Females)
@@ -58,7 +58,7 @@ summary(Females)
 
 
 #Males
-Males_Sample_Info <- read.xlsx("/Users/juliamouat/Library/Mobile Documents/com~apple~CloudDocs/LaSalle Lab/Down Syndrome/DMRichR/sample_info_all.xlsx", sheet = "Males")
+Males_Sample_Info <- read.xlsx("Down Syndrome/DMRichR/sample_info_all.xlsx", sheet = "Males")
 Males_Sample_Info_Clean <- Males_Sample_Info[1:32,]
 Males <- lm(percent_cpg_meth ~ MajorHeartDefect, data = Males_Sample_Info_Clean)
 summary(Males)
